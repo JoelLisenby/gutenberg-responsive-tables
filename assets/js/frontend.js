@@ -29,19 +29,25 @@
 
         table.querySelectorAll('tbody tr').forEach(row => {
             row.querySelectorAll('td').forEach((cell, index) => {
-                if (headers[index]) {
-                    const labelSpan = document.createElement('span');
-                    labelSpan.className = 'screen-reader-text';
-                    labelSpan.textContent = headers[index] + ': ';
-                    cell.insertBefore(labelSpan, cell.firstChild);
-                    cell.setAttribute('data-label', headers[index]);
+                // Only add label if it hasn't been added yet
+                if (!cell.hasAttribute('data-label') || !cell.querySelector('.screen-reader-text')) {
+                    if (headers[index]) {
+                        cell.setAttribute('data-label', headers[index]);
+
+                        // Only insert the screen-reader span if it doesn't already exist
+                        if (!cell.querySelector('.screen-reader-text')) {
+                            const labelSpan = document.createElement('span');
+                            labelSpan.className = 'screen-reader-text';
+                            labelSpan.textContent = headers[index] + ': ';
+                            cell.insertBefore(labelSpan, cell.firstChild);
+                        }
+                    }
                 }
             });
         });
     }
 
     function handleHorizontalScroll(table) {
-        // Force the table to respect its content width
         table.style.setProperty('width', 'auto', 'important');
         table.style.setProperty('min-width', 'max-content', 'important');
         table.style.setProperty('table-layout', 'auto', 'important');
