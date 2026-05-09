@@ -1,7 +1,4 @@
-# Table Cards Responsive
-
-**Version:** 0.1.15  
-**Released:** May 9, 2026
+# Gutenberg Responsive Table Block
 
 A lightweight plugin that adds responsive behavior options to the core Gutenberg Table block.
 
