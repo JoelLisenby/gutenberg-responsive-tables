@@ -50,9 +50,10 @@ const withTableResponsiveControls = createHigherOrderComponent((BlockEdit) => {
                             ],
                             onChange: (value) => setAttributes({ responsiveMode: value }),
                         }),
-                        responsiveMode === 'cards' && createElement(TextControl, {
-                            label: __('Mobile Breakpoint (px)', 'table-cards-responsive'),
-                            help: __('Leave empty to use automatic theme detection', 'table-cards-responsive'),
+                        // Breakpoint control now available for BOTH modes
+                        createElement(TextControl, {
+                            label: __('Responsive Breakpoint (px)', 'table-cards-responsive'),
+                            help: __('Screen width below which responsive mode activates (Horizontal Scroll or Cards). Leave empty to use automatic theme detection (default ~782px).', 'table-cards-responsive'),
                             type: 'number',
                             value: responsiveBreakpoint || '',
                             onChange: (value) => {

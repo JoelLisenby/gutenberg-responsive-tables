@@ -32,7 +32,6 @@
                 if (cell.dataset.labelProcessed === 'true') return;
 
                 if (headers[index]) {
-                    // Save original HTML for restoration
                     cell.dataset.originalContent = cell.innerHTML;
 
                     const labelDiv = document.createElement('div');
@@ -42,7 +41,6 @@
                     strong.textContent = headers[index];
                     labelDiv.appendChild(strong);
 
-                    // Insert label at the beginning of the cell
                     cell.insertBefore(labelDiv, cell.firstChild);
 
                     cell.dataset.labelProcessed = 'true';
@@ -89,9 +87,23 @@
                     restoreTable(table);
                 }
             }
-        } 
-        else if (mode === 'scroll' && shouldActivate) {
-            handleHorizontalScroll(table);
+        } else if (mode === 'scroll') {
+            const wrapper = table.closest('.table-responsive-scroll');
+
+            if (shouldActivate) {
+                if (wrapper) {
+                    wrapper.classList.add('is-scroll-active');
+                }
+                handleHorizontalScroll(table);
+            } else {
+                if (wrapper) {
+                    wrapper.classList.remove('is-scroll-active');
+                }
+                // Reset inline styles so normal table behavior returns above breakpoint
+                table.style.removeProperty('width');
+                table.style.removeProperty('min-width');
+                table.style.removeProperty('table-layout');
+            }
         }
     }
 
@@ -99,18 +111,28 @@
         const tables = document.querySelectorAll(TABLE_SELECTOR);
 
         tables.forEach(table => {
-            if (!table.hasAttribute('data-responsive-cards') && 
-                !table.hasAttribute('data-responsive-breakpoint')) {
+            if (!table.hasAttribute('data-responsive-mode')) {
                 return;
             }
 
-            // Restore on initial load if needed
             const mode = table.getAttribute('data-responsive-mode') || 'scroll';
             const breakpoint = getBreakpoint(table);
             const shouldActivate = window.innerWidth <= breakpoint;
 
+            // Initial cleanup for cards (kept for compatibility)
             if (mode === 'cards' && !shouldActivate && table.classList.contains('is-cards-active')) {
                 restoreTable(table);
+            }
+
+            // Initial cleanup for scroll (above breakpoint)
+            if (mode === 'scroll' && !shouldActivate) {
+                const wrapper = table.closest('.table-responsive-scroll');
+                if (wrapper && wrapper.classList.contains('is-scroll-active')) {
+                    wrapper.classList.remove('is-scroll-active');
+                }
+                table.style.removeProperty('width');
+                table.style.removeProperty('min-width');
+                table.style.removeProperty('table-layout');
             }
 
             updateTable(table);
