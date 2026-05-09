@@ -3,8 +3,7 @@
 .wp-block-table table.is-cards-active thead{display:none;}
 .wp-block-table table.is-cards-active tbody,.wp-block-table table.is-cards-active tr{display:block;}
 .wp-block-table table.is-cards-active tr{margin-bottom:1.5rem;padding:1rem;border:1px solid #e2e2e2;border-radius:8px;background-color:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
-.wp-block-table table.is-cards-active td{display:block;padding:0.75rem 0;border-bottom:1px solid #eee;}
-.wp-block-table table.is-cards-active td:last-child{border-bottom:none;}
+.wp-block-table table.is-cards-active td{display:block;padding:0.75rem 0;border: none;}
 .wp-block-table table.is-cards-active .card-label{font-weight:600;margin-bottom:0.5rem;}
 .wp-block-table table.is-cards-active .card-value{padding-bottom:1em;}
 .wp-block-table table.is-cards-active .card-value:last-child{padding-bottom:0;}
