@@ -29,19 +29,26 @@
 
         table.querySelectorAll('tbody tr').forEach(row => {
             row.querySelectorAll('td').forEach((cell, index) => {
-                // Only add label if it hasn't been added yet
-                if (!cell.hasAttribute('data-label') || !cell.querySelector('.screen-reader-text')) {
-                    if (headers[index]) {
-                        cell.setAttribute('data-label', headers[index]);
+                // Prevent running multiple times on the same cell
+                if (cell.dataset.labelProcessed === 'true') return;
 
-                        // Only insert the screen-reader span if it doesn't already exist
-                        if (!cell.querySelector('.screen-reader-text')) {
-                            const labelSpan = document.createElement('span');
-                            labelSpan.className = 'screen-reader-text';
-                            labelSpan.textContent = headers[index] + ': ';
-                            cell.insertBefore(labelSpan, cell.firstChild);
-                        }
-                    }
+                if (headers[index]) {
+                    cell.setAttribute('data-label', headers[index]);
+
+                    // Create visible bold label
+                    const labelWrapper = document.createElement('div');
+                    labelWrapper.className = 'card-label';
+
+                    const strong = document.createElement('strong');
+                    strong.textContent = headers[index] + ':';
+
+                    labelWrapper.appendChild(strong);
+
+                    // Insert the label at the beginning of the cell
+                    cell.insertBefore(labelWrapper, cell.firstChild);
+
+                    // Mark as processed so we don't duplicate
+                    cell.dataset.labelProcessed = 'true';
                 }
             });
         });
