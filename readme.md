@@ -1,5 +1,8 @@
 # Table Cards Responsive
 
+**Version:** 0.1.15  
+**Released:** May 9, 2026
+
 A lightweight plugin that adds responsive behavior options to the core Gutenberg Table block.
 
 ## Features
@@ -12,6 +15,10 @@ A lightweight plugin that adds responsive behavior options to the core Gutenberg
 - Accessibility improvements for screen readers.
 - Only loads assets when responsive mode is enabled.
 - Supports Reusable Blocks, Template Parts, and Query Loops.
+
+## Changelog
+
+See [changelog.md](changelog.md) for the complete history of changes and fixes.
 
 ## Installation
 
@@ -34,3 +41,12 @@ A lightweight plugin that adds responsive behavior options to the core Gutenberg
 ## License
 
 GPL-2.0-or-later
+
+## About
+
+Plugin that makes Gutenberg Tables block responsive with both horizontal scroll or cards option.
+
+### Resources
+
+- [GitHub Repository](https://github.com/JoelLisenby/gutenberg-responsive-tables)
+- [Changelog](changelog.md)
