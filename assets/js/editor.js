@@ -1,8 +1,9 @@
 const { addFilter } = wp.hooks;
 const { createHigherOrderComponent } = wp.compose;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl } = wp.components;
+const { PanelBody, ToggleControl, RadioControl, TextControl } = wp.components;
 const { createElement, Fragment } = wp.element;
+const { __ } = wp.i18n;
 
 const withTableResponsiveControls = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
@@ -11,7 +12,7 @@ const withTableResponsiveControls = createHigherOrderComponent((BlockEdit) => {
         }
 
         const { attributes, setAttributes } = props;
-        const { responsiveBreakpoint } = attributes;
+        const { enableResponsive, responsiveMode, responsiveBreakpoint } = attributes;
 
         return createElement(
             Fragment,
@@ -22,19 +23,44 @@ const withTableResponsiveControls = createHigherOrderComponent((BlockEdit) => {
                 null,
                 createElement(
                     PanelBody,
-                    { title: 'Responsive Cards', initialOpen: false },
-                    createElement(TextControl, {
-                        label: 'Mobile Breakpoint (px)',
-                        help: 'Leave empty to use automatic theme detection. Example: 768',
-                        value: responsiveBreakpoint || '',
-                        type: 'number',
-                        onChange: (value) => {
-                            const num = parseInt(value, 10);
-                            setAttributes({
-                                responsiveBreakpoint: isNaN(num) ? null : num,
-                            });
-                        },
-                    })
+                    { 
+                        title: __('Responsive Behavior', 'table-cards-responsive'), 
+                        initialOpen: true 
+                    },
+                    createElement(ToggleControl, {
+                        label: __('Enable Responsive Mode', 'table-cards-responsive'),
+                        checked: enableResponsive,
+                        onChange: (value) => setAttributes({ enableResponsive: value }),
+                    }),
+                    enableResponsive && createElement(
+                        Fragment,
+                        null,
+                        createElement(RadioControl, {
+                            label: __('Responsive Mode', 'table-cards-responsive'),
+                            selected: responsiveMode || 'scroll',
+                            options: [
+                                { 
+                                    label: __('Horizontal Scroll', 'table-cards-responsive'), 
+                                    value: 'scroll' 
+                                },
+                                { 
+                                    label: __('Rows to Cards', 'table-cards-responsive'), 
+                                    value: 'cards' 
+                                },
+                            ],
+                            onChange: (value) => setAttributes({ responsiveMode: value }),
+                        }),
+                        responsiveMode === 'cards' && createElement(TextControl, {
+                            label: __('Mobile Breakpoint (px)', 'table-cards-responsive'),
+                            help: __('Leave empty to use automatic theme detection', 'table-cards-responsive'),
+                            type: 'number',
+                            value: responsiveBreakpoint || '',
+                            onChange: (value) => {
+                                const num = parseInt(value, 10);
+                                setAttributes({ responsiveBreakpoint: isNaN(num) ? null : num });
+                            },
+                        })
+                    )
                 )
             )
         );

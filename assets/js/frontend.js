@@ -1,107 +1,87 @@
-/**
- * Table Cards Responsive - Frontend (Advanced Version)
- * Dynamically activates card mode based on per-table breakpoint.
- */
 (function () {
     'use strict';
 
     const TABLE_SELECTOR = '.wp-block-table table';
 
-    function getBreakpointForTable(table) {
-        // Per-table custom breakpoint (from sidebar)
+    function getBreakpoint(table) {
         const custom = table.getAttribute('data-responsive-breakpoint');
-        if (custom) {
-            return parseInt(custom, 10);
-        }
+        if (custom) return parseInt(custom, 10);
 
-        // Try to detect from theme CSS variables
-        const rootStyles = getComputedStyle(document.documentElement);
-        const candidates = [
-            '--wp--breakpoint--mobile',
-            '--mobile-breakpoint',
-            '--breakpoint-mobile'
-        ];
+        const styles = getComputedStyle(document.documentElement);
+        const vars = ['--wp--breakpoint--mobile', '--mobile-breakpoint', '--breakpoint-mobile'];
 
-        for (const variable of candidates) {
-            const value = rootStyles.getPropertyValue(variable).trim();
-            if (value) {
-                const parsed = parseInt(value, 10);
-                if (parsed > 0) return parsed;
+        for (const v of vars) {
+            const val = styles.getPropertyValue(v).trim();
+            if (val) {
+                const num = parseInt(val, 10);
+                if (num > 0) return num;
             }
         }
-
-        // Final fallback
         return 782;
     }
 
-    function setupTableCards(table) {
+    function setupCards(table) {
         const thead = table.querySelector('thead');
         if (!thead) return;
 
         const headers = Array.from(thead.querySelectorAll('th')).map(th => th.textContent.trim());
         if (!headers.length) return;
 
-        const rows = table.querySelectorAll('tbody tr');
-
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            cells.forEach((cell, index) => {
+        table.querySelectorAll('tbody tr').forEach(row => {
+            row.querySelectorAll('td').forEach((cell, index) => {
                 if (headers[index]) {
+                    // Accessibility improvement: add visually hidden label + data-label
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'screen-reader-text';
+                    labelSpan.textContent = headers[index] + ': ';
+                    cell.insertBefore(labelSpan, cell.firstChild);
+
                     cell.setAttribute('data-label', headers[index]);
                 }
             });
         });
     }
 
-    function updateTableState(table) {
-        const breakpoint = getBreakpointForTable(table);
-        const isBelowBreakpoint = window.innerWidth <= breakpoint;
+    function updateTable(table) {
+        const mode = table.getAttribute('data-responsive-mode') || 'scroll';
+        const breakpoint = getBreakpoint(table);
+        const shouldActivate = window.innerWidth <= breakpoint;
 
-        if (isBelowBreakpoint) {
-            if (!table.classList.contains('is-cards-active')) {
-                table.classList.add('is-cards-active');
-                setupTableCards(table);
+        if (mode === 'cards') {
+            if (shouldActivate) {
+                if (!table.classList.contains('is-cards-active')) {
+                    table.classList.add('is-cards-active');
+                    setupCards(table);
+                }
+            } else {
+                table.classList.remove('is-cards-active');
             }
-        } else {
-            table.classList.remove('is-cards-active');
         }
     }
 
-    function initResponsiveCards() {
+    function init() {
         const tables = document.querySelectorAll(TABLE_SELECTOR);
 
         tables.forEach(table => {
-            // Only process tables that have opted into card mode
             if (!table.hasAttribute('data-responsive-cards') && 
                 !table.hasAttribute('data-responsive-breakpoint')) {
                 return;
             }
-
-            updateTableState(table);
+            updateTable(table);
         });
-    }
 
-    function init() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initResponsiveCards);
-        } else {
-            initResponsiveCards();
-        }
-
-        // Debounced resize handler
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
-                const tables = document.querySelectorAll(
-                    '.wp-block-table table.is-cards-active, ' +
-                    '.wp-block-table table[data-responsive-cards], ' +
-                    '.wp-block-table table[data-responsive-breakpoint]'
-                );
-                tables.forEach(updateTableState);
+                document.querySelectorAll(TABLE_SELECTOR).forEach(updateTable);
             }, 150);
         });
     }
 
-    init();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 })();
