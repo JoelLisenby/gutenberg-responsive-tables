@@ -41,13 +41,10 @@
     }
 
     function handleHorizontalScroll(table) {
-        const wrapper = table.parentElement;
-        if (!wrapper || !wrapper.classList.contains('table-responsive-scroll')) return;
-
-        // Force the table to be at least as wide as its content
-        if (table.scrollWidth > wrapper.clientWidth) {
-            table.style.minWidth = table.scrollWidth + 'px';
-        }
+        // Force the table to respect its content width
+        table.style.setProperty('width', 'auto', 'important');
+        table.style.setProperty('min-width', 'max-content', 'important');
+        table.style.setProperty('table-layout', 'auto', 'important');
     }
 
     function updateTable(table) {
