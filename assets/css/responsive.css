@@ -1,0 +1,38 @@
+.wp-block-table table[data-responsive-cards]{
+	display:block;
+	border:none;
+	width:100%;
+}
+.wp-block-table table[data-responsive-cards] thead{
+	display:none;
+}
+.wp-block-table table[data-responsive-cards] tbody,
+.wp-block-table table[data-responsive-cards] tr{
+	display:block;
+}
+.wp-block-table table[data-responsive-cards] tr{
+	margin-bottom:1.5rem;
+	padding:1rem;
+	border:1px solid #e2e2e2;
+	border-radius:8px;
+	background-color:#fff;
+	box-shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+.wp-block-table table[data-responsive-cards] td{
+	display:block;
+	padding:.75rem 0;
+	border:none;
+}
+.wp-block-table table[data-responsive-cards] .card-label{
+	font-weight:600;
+	margin-bottom:.5rem;
+}
+.table-responsive-scroll{
+	overflow-x:auto;
+	-webkit-overflow-scrolling:touch;
+}
+.table-responsive-scroll table{
+	width:auto !important;
+	min-width:max-content !important;
+	table-layout:auto !important;
+}
