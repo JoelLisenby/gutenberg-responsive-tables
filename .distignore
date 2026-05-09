@@ -1,0 +1,14 @@
+# .distignore
+.git
+.github
+.gitignore
+node_modules
+vendor
+tests
+bin
+*.md
+composer.json
+composer.lock
+package.json
+package-lock.json
+.distignore
