@@ -16,6 +16,18 @@ A lightweight plugin that adds responsive behavior options to the core Gutenberg
 - Only loads assets when responsive mode is enabled.
 - Supports Reusable Blocks, Template Parts, and Query Loops.
 
+## Settings Page
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e2527c56-e2d5-4e28-9d85-15f07bedf956" />
+
+## Responsive Mode: Horizontal Scroll
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/fc526858-9048-42d8-bda0-d5d9e956b18b" />
+
+## Responsive Mode: Rows to Cards
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/651ff997-ad53-43cb-81da-b2c226f78501" />
+
 ## Changelog
 
 See [changelog.md](changelog.md) for the complete history of changes and fixes.
