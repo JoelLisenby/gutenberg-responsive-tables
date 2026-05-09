@@ -1,47 +1,48 @@
-/* === Card Stack Mode for Gutenberg Table Block === */
-@media (max-width: 768px) {
-    .wp-block-table table[data-responsive-cards] {
-        display: block;
-        border: none;
-    }
+/* === Table Cards Responsive Mode (Class-based) === */
 
-    .wp-block-table table[data-responsive-cards] thead {
-        display: none;
-    }
+.wp-block-table table.is-cards-active {
+    display: block;
+    border: none;
+    width: 100%;
+}
 
-    .wp-block-table table[data-responsive-cards] tbody,
-    .wp-block-table table[data-responsive-cards] tr {
-        display: block;
-    }
+.wp-block-table table.is-cards-active thead {
+    display: none;
+}
 
-    .wp-block-table table[data-responsive-cards] tr {
-        margin-bottom: 1.5rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 1rem;
-        background: #fff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
+.wp-block-table table.is-cards-active tbody,
+.wp-block-table table.is-cards-active tr {
+    display: block;
+}
 
-    .wp-block-table table[data-responsive-cards] td {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 0.5rem 0;
-        border: none;
-        border-bottom: 1px solid #eee;
-    }
+.wp-block-table table.is-cards-active tr {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 
-    .wp-block-table table[data-responsive-cards] td:last-child {
-        border-bottom: none;
-    }
+.wp-block-table table.is-cards-active td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.6rem 0;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+}
 
-    .wp-block-table table[data-responsive-cards] td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #333;
-        margin-right: 1rem;
-        flex-shrink: 0;
-        min-width: 120px;
-    }
+.wp-block-table table.is-cards-active td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.wp-block-table table.is-cards-active td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #1e1e1e;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    min-width: 130px;
 }

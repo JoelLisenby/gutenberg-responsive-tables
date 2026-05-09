@@ -3,7 +3,7 @@
  * Plugin Name: Table Cards Responsive
  * Description: Adds an optional "Cards" responsive mode to the core Gutenberg Table block with per-table breakpoint control.
  * Author: Joel Lisenby
- * Version: 0.1
+ * Version: 0.0.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
