@@ -3,7 +3,7 @@
  * Plugin Name: Table Cards Responsive
  * Plugin URI:  https://github.com/JoelLisenby/gutenberg-responsive-tables
  * Description: Adds responsive options (Horizontal Scroll or Rows to Cards) to the Gutenberg Table block with accessibility improvements.
- * Version:     0.1.3
+ * Version:     0.1.4
  * Author:      Joel Lisenby
  * License:     GPL-2.0-or-later
  * Text Domain: table-cards-responsive
@@ -48,7 +48,30 @@ function tcr_has_responsive_table( $blocks ) {
     return false;
 }
 
-// Enqueue JavaScript conditionally + Register block style
+// ============================================
+// Editor Assets
+// ============================================
+add_action( 'enqueue_block_editor_assets', function() {
+    wp_enqueue_script(
+        'table-responsive-editor',
+        plugin_dir_url( __FILE__ ) . 'assets/js/editor.js',
+        [
+            'wp-blocks',
+            'wp-element',
+            'wp-editor',
+            'wp-components',
+            'wp-compose',
+            'wp-hooks',
+            'wp-i18n',
+        ],
+        '0.1.3',
+        true
+    );
+});
+
+// ============================================
+// Frontend Assets (Conditional)
+// ============================================
 add_action( 'wp_enqueue_scripts', function() {
     if ( ! is_singular() ) {
         return;
@@ -72,7 +95,7 @@ add_action( 'wp_enqueue_scripts', function() {
     }
 });
 
-// Use modern wp_enqueue_block_style() for CSS
+// Use modern block style registration
 add_action( 'init', function() {
     wp_enqueue_block_style(
         'core/table',
