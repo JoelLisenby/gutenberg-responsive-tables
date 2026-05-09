@@ -52,7 +52,7 @@ add_action( 'enqueue_block_editor_assets', function() {
 			'wp-hooks',
 			'wp-i18n',
 		],
-		'0.1.15',
+		'0.1.16',
 		true
 	);
 });
@@ -70,7 +70,7 @@ add_action( 'wp_enqueue_scripts', function() {
 			'table-responsive-frontend',
 			plugin_dir_url( __FILE__ ) . 'assets/js/frontend.js',
 			[],
-			'0.1.15',
+			'0.1.16',
 			true
 		);
 	}
@@ -81,7 +81,7 @@ add_action( 'init', function() {
 		[
 			'handle' => 'table-responsive-style',
 			'src' => plugin_dir_url( __FILE__ ) . 'assets/css/style.css',
-			'ver' => '0.1.15',
+			'ver' => '0.1.16',
 		]
 	);
 });
@@ -109,7 +109,7 @@ add_filter( 'render_block_core/table', function( $block_content, $block ) {
 		'table-responsive-media-' . $bp,
 		plugin_dir_url( __FILE__ ) . 'assets/css/responsive.css',
 		[ 'table-responsive-style' ],
-		'0.1.15',
+		'0.1.16',
 		'screen and (max-width:' . $bp . 'px)'
 	);
 	return $block_content;
