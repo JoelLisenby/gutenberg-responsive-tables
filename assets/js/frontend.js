@@ -30,16 +30,24 @@
         table.querySelectorAll('tbody tr').forEach(row => {
             row.querySelectorAll('td').forEach((cell, index) => {
                 if (headers[index]) {
-                    // Accessibility improvement: add visually hidden label + data-label
                     const labelSpan = document.createElement('span');
                     labelSpan.className = 'screen-reader-text';
                     labelSpan.textContent = headers[index] + ': ';
                     cell.insertBefore(labelSpan, cell.firstChild);
-
                     cell.setAttribute('data-label', headers[index]);
                 }
             });
         });
+    }
+
+    function handleHorizontalScroll(table) {
+        const wrapper = table.parentElement;
+        if (!wrapper || !wrapper.classList.contains('table-responsive-scroll')) return;
+
+        // Force the table to be at least as wide as its content
+        if (table.scrollWidth > wrapper.clientWidth) {
+            table.style.minWidth = table.scrollWidth + 'px';
+        }
     }
 
     function updateTable(table) {
@@ -56,6 +64,9 @@
             } else {
                 table.classList.remove('is-cards-active');
             }
+        } 
+        else if (mode === 'scroll' && shouldActivate) {
+            handleHorizontalScroll(table);
         }
     }
 
