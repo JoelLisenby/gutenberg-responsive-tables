@@ -32,8 +32,8 @@
                 if (cell.dataset.labelProcessed === 'true') return;
 
                 if (headers[index]) {
-                    const originalContent = Array.from(cell.childNodes);
-                    cell.innerHTML = '';
+                    // Save original HTML for restoration
+                    cell.dataset.originalContent = cell.innerHTML;
 
                     const labelDiv = document.createElement('div');
                     labelDiv.className = 'card-label';
@@ -42,21 +42,29 @@
                     strong.textContent = headers[index];
                     labelDiv.appendChild(strong);
 
-                    const valueDiv = document.createElement('div');
-                    valueDiv.className = 'card-value';
-
-                    originalContent.forEach(node => {
-                        valueDiv.appendChild(node);
-                    });
-
-                    cell.appendChild(labelDiv);
-                    cell.appendChild(valueDiv);
+                    // Insert label at the beginning of the cell
+                    cell.insertBefore(labelDiv, cell.firstChild);
 
                     cell.dataset.labelProcessed = 'true';
                     cell.setAttribute('data-label', headers[index]);
                 }
             });
         });
+    }
+
+    function restoreTable(table) {
+        table.querySelectorAll('.card-label').forEach(label => label.remove());
+
+        table.querySelectorAll('tbody tr td').forEach(cell => {
+            if (cell.dataset.originalContent) {
+                cell.innerHTML = cell.dataset.originalContent;
+                delete cell.dataset.originalContent;
+            }
+            delete cell.dataset.labelProcessed;
+            cell.removeAttribute('data-label');
+        });
+
+        table.classList.remove('is-cards-active');
     }
 
     function handleHorizontalScroll(table) {
@@ -77,7 +85,9 @@
                     setupCards(table);
                 }
             } else {
-                table.classList.remove('is-cards-active');
+                if (table.classList.contains('is-cards-active')) {
+                    restoreTable(table);
+                }
             }
         } 
         else if (mode === 'scroll' && shouldActivate) {
@@ -93,6 +103,16 @@
                 !table.hasAttribute('data-responsive-breakpoint')) {
                 return;
             }
+
+            // Restore on initial load if needed
+            const mode = table.getAttribute('data-responsive-mode') || 'scroll';
+            const breakpoint = getBreakpoint(table);
+            const shouldActivate = window.innerWidth <= breakpoint;
+
+            if (mode === 'cards' && !shouldActivate && table.classList.contains('is-cards-active')) {
+                restoreTable(table);
+            }
+
             updateTable(table);
         });
 
