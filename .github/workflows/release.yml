@@ -3,23 +3,26 @@ name: Create Plugin Release
 on:
   push:
     tags:
-      - "v*.*.*"     # Only runs when you push a tag like v1.0.0, v1.2.3, etc.
+      - "v*.*.*"
 
 jobs:
-  build:
+  release:
     name: Build & Release
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build production plugin zip
-        uses: 10up/action-wordpress-plugin-build-zip@stable
-        # The action automatically:
-        # - Creates a folder called "gutenberg-responsive-tables"
-        # - Puts your plugin files inside it
-        # - Outputs gutenberg-responsive-tables.zip
+      - name: Prepare plugin folder structure
+        run: |
+          mkdir -p build/gutenberg-responsive-tables
+          rsync -av --delete --exclude-from=.distignore ./ build/gutenberg-responsive-tables/
+
+      - name: Create production zip
+        run: |
+          cd build
+          zip -r ../gutenberg-responsive-tables.zip gutenberg-responsive-tables
 
       - name: Create GitHub Release + attach ZIP
         uses: softprops/action-gh-release@v2
@@ -27,4 +30,3 @@ jobs:
           files: gutenberg-responsive-tables.zip
           generate_release_notes: true
           draft: false
-          prerelease: false
