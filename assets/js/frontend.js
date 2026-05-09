@@ -29,26 +29,31 @@
 
         table.querySelectorAll('tbody tr').forEach(row => {
             row.querySelectorAll('td').forEach((cell, index) => {
-                // Prevent running multiple times on the same cell
                 if (cell.dataset.labelProcessed === 'true') return;
 
                 if (headers[index]) {
-                    cell.setAttribute('data-label', headers[index]);
+                    const originalContent = Array.from(cell.childNodes);
+                    cell.innerHTML = '';
 
-                    // Create visible bold label
-                    const labelWrapper = document.createElement('div');
-                    labelWrapper.className = 'card-label';
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'card-label';
 
                     const strong = document.createElement('strong');
-                    strong.textContent = headers[index] + ':';
+                    strong.textContent = headers[index];
+                    labelDiv.appendChild(strong);
 
-                    labelWrapper.appendChild(strong);
+                    const valueDiv = document.createElement('div');
+                    valueDiv.className = 'card-value';
 
-                    // Insert the label at the beginning of the cell
-                    cell.insertBefore(labelWrapper, cell.firstChild);
+                    originalContent.forEach(node => {
+                        valueDiv.appendChild(node);
+                    });
 
-                    // Mark as processed so we don't duplicate
+                    cell.appendChild(labelDiv);
+                    cell.appendChild(valueDiv);
+
                     cell.dataset.labelProcessed = 'true';
+                    cell.setAttribute('data-label', headers[index]);
                 }
             });
         });
